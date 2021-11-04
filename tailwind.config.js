@@ -4,9 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "at-light-green": "#44ba9f",
-        "at-green": "#286d5d",
-        "light-grey": "#f1f1f1",
+        "at-light-red": "#C20114",
+        "at-green": "#B70113",
+        "light-grey": "#C7D6D5",
+        "almost-white": "ECEBF3",
       },
     },
     fontFamily: {
