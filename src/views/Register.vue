@@ -68,7 +68,7 @@ export default {
                 errorMsg.value = error.message;
                 setTimeout(() => {
                 errorMsg.value = null;
-        }, 5000)
+                }, 5000)
             }
             return;
         }
