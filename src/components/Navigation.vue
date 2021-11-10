@@ -7,7 +7,7 @@
       </div>
       <ul class="flex flex-1 justify-end gap-x-10">
         <router-link class="cursor-pointer" :to="{ name: 'Home'}">Home</router-link>
-        <router-link v-if="user" class="cursor-pointer" :to="{ name: ''}">New</router-link>
+        <router-link v-if="user" class="cursor-pointer" :to="{ name: 'Create'}">New</router-link>
         <router-link v-if="!user" class="cursor-pointer" :to="{ name: 'Login'}">Login</router-link>
         <li v-if="user" @click="logout" class="cursor-pointer">Logout</li>
       </ul>
