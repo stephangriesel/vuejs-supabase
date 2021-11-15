@@ -29,7 +29,7 @@
                     <label class="mb-1 text-sm text-at-light-red" for="tour-type">
                         Tour Type
                     </label>
-                    <select class="p-2 text-gray-500 focus:outline-none" id="tour-type" required v-model="tourType">
+                    <select class="p-2 text-gray-500 focus:outline-none" id="tour-type" required @change="tourChange" v-model="tourType">
                         <option value="select-tour">Select Tour</option>
                         <option value="walk">Walk</option>
                         <option value="bike">Bike</option>
@@ -127,10 +127,15 @@ export default {
     // Delete tour
 
     // Listens for chaging of workout type input
+    const tourChange = () => {
+        tourName.value = [];
+        addTour();
+
+    }
 
     // Create workout
 
-    return {tourName, tourType, activities, statusMsg, errorMsg, addTour};
+    return {tourName, tourType, activities, statusMsg, errorMsg, addTour,tourChange};
   },
 };
 </script>
