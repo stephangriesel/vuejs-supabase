@@ -58,7 +58,7 @@
                         </div>
                         <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" src="@/assets/images/trash.svg">
                     </div>
-                    <button class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Tour</button>
+                    <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Tour</button>
                 </div>
 
                 <!-- Bike Tour Inputs -->
@@ -73,8 +73,8 @@
                             </select>
                         </div>
                         <div class="flex flex-col flex-1">
-                            <label class="mb-1 text-sm text-at-light-red" for="activity-distance">Distance</label>
-                            <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.distance">
+                            <label class="mb-1 text-sm text-at-light-red" for="activity-landmarks">Landmarks</label>
+                            <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.landmarks">
                         </div>
                         <div class="flex flex-col flex-1">
                             <label class="mb-1 text-sm text-at-light-red" for="activity-facts">Facts</label>
@@ -86,7 +86,7 @@
                         </div>
                         <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" src="@/assets/images/trash.svg">
                     </div>
-                    <button class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Bike Tour</button>
+                    <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Bike Tour</button>
                 </div>
 
             </form>
@@ -97,6 +97,7 @@
 <script>
 
 import {ref} from "vue";
+import {uid} from "uid";
 
 export default {
   name: "create",
@@ -110,6 +111,18 @@ export default {
 
 
     // Add tour
+    const addTour = () => {
+        if (tourType.value === 'walk') {
+            tourName.value.push({
+                id: uid(),
+                tour: '',
+                landmarks: '',
+                facts: '',
+                duration:'',
+            });
+            return
+        }
+    }
 
     // Delete tour
 
@@ -117,7 +130,7 @@ export default {
 
     // Create workout
 
-    return {tourName, tourType, activities, statusMsg, errorMsg};
+    return {tourName, tourType, activities, statusMsg, errorMsg, addTour};
   },
 };
 </script>
