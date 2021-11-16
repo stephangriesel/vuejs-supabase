@@ -13,7 +13,7 @@
         <!-- Create -->
         <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg">
             <!-- Form -->
-            <form class="flex flex-col gap-y-5 w-full">
+            <form @submit.prevent="createTour" class="flex flex-col gap-y-5 w-full">
                 <h1 class="text-2xl text-at-light-red">Add Tour</h1>
 
                 <!-- Tour name -->
@@ -56,7 +56,7 @@
                             <label class="mb-1 text-sm text-at-light-red" for="activity-duration">Duration</label>
                             <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.duration">
                         </div>
-                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" src="@/assets/images/trash.svg">
+                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteTour(item.id)" src="@/assets/images/trash.svg">
                     </div>
                     <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Tour</button>
                 </div>
@@ -84,7 +84,7 @@
                             <label class="mb-1 text-sm text-at-light-red" for="activity-duration">Duration</label>
                             <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.duration">
                         </div>
-                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" src="@/assets/images/trash.svg">
+                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteTour(item.id)" src="@/assets/images/trash.svg">
                     </div>
                     <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Bike Tour</button>
                 </div>
@@ -98,6 +98,7 @@
 
 import {ref} from "vue";
 import {uid} from "uid";
+import {supabase} from '../supabase/init';
 
 export default {
   name: "create",
@@ -125,17 +126,52 @@ export default {
     }
 
     // Delete tour
+    const deleteTour = (id) => {
+        if (tourName.value.length > 1){
+            tourName.value = tourName.value.filter(tour => tour.id !== id );
+            return;
+        }
+        errorMsg.value = "Error: Can not remove, need at least one tour";
+        setTimeout(( ) => {
+            errorMsg.value = false;
+        }, 5000)
+    }
 
-    // Listens for chaging of workout type input
+    // Listens for changing of tour type input
     const tourChange = () => {
         tourName.value = [];
         addTour();
 
     }
 
-    // Create workout
+    // Create tour
+    const createTour = async () => {
+        try{
+            const {error} = await supabase.from('tours').insert([
+                {
+                    tourName: tourName.value,
+                    tourType: tourType.value,
+                    activities: activities.value,
+                },
+            ]);
+            if(error) throw error;
+            statusMsg.value = 'Success: Tour Created';
+            tourName.value = null;
+            tourType.value = 'select-tour';
+            activities.value = [];
+                        setTimeout(() => {
+                statusMsg.value = false;
+            },5000)
+        }
+        catch(error) {
+            errorMsg.value = `Error: ${error.message}`;
+            setTimeout(() => {
+                errorMsg.value = false;
+            },5000)
+        }
+    }
 
-    return {tourName, tourType, activities, statusMsg, errorMsg, addTour,tourChange};
+    return {tourName, tourType, activities, statusMsg, errorMsg, addTour,tourChange, deleteTour, createTour};
   },
 };
 </script>
