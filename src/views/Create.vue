@@ -58,7 +58,7 @@
                         </div>
                         <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteActivity(item.id)" src="@/assets/images/trash.svg">
                     </div>
-                    <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Tour</button>
+                    <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Walk Tour</button>
                 </div>
 
                 <!-- Bike Tour Inputs -->
