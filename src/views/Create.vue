@@ -56,7 +56,7 @@
                             <label class="mb-1 text-sm text-at-light-red" for="activity-duration">Duration</label>
                             <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.duration">
                         </div>
-                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteTour(item.id)" src="@/assets/images/trash.svg">
+                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteActivity(item.id)" src="@/assets/images/trash.svg">
                     </div>
                     <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Tour</button>
                 </div>
@@ -84,10 +84,12 @@
                             <label class="mb-1 text-sm text-at-light-red" for="activity-duration">Duration</label>
                             <input class="p-2 w-full text-gray-500 focus:outline-none" required type="text" v-model="item.duration">
                         </div>
-                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteTour(item.id)" src="@/assets/images/trash.svg">
+                        <img alt="" class="h-4 w-auto absolute -left-5 cursor-pointer" @click="deleteActivity(item.id)" src="@/assets/images/trash.svg">
                     </div>
                     <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Bike Tour</button>
                 </div>
+
+                <button @click="addTour" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="submit">Add Tour</button>
 
             </form>
         </div>
@@ -114,32 +116,40 @@ export default {
     // Add tour
     const addTour = () => {
         if (tourType.value === 'walk') {
-            tourName.value.push({
+            activities.value.push({
                 id: uid(),
-                tour: '',
-                landmarks: '',
-                facts: '',
-                duration:'',
+                tour: "",
+                landmarks: "",
+                facts: "",
+                duration:"",
             });
             return
         }
+        activities.value.push({
+            id: uid(),
+            bikeType: "",
+            landmarks: "",
+            facts:"",
+            duration:"",
+
+        })
     }
 
-    // Delete tour
-    const deleteTour = (id) => {
-        if (tourName.value.length > 1){
-            tourName.value = tourName.value.filter(tour => tour.id !== id );
+    // Delete activity
+    const deleteActivity = (id) => {
+        if (activities.value.length > 1){
+            activities.value = activities.value.filter(activity => activity.id !== id );
             return;
         }
-        errorMsg.value = "Error: Can not remove, need at least one tour";
+        errorMsg.value = "Error: Can not remove, need at least one activity";
         setTimeout(( ) => {
             errorMsg.value = false;
         }, 5000)
     }
 
-    // Listens for changing of tour type input
+    // Listens for changing of activity type input
     const tourChange = () => {
-        tourName.value = [];
+        activities.value = [];
         addTour();
 
     }
@@ -171,7 +181,7 @@ export default {
         }
     }
 
-    return {tourName, tourType, activities, statusMsg, errorMsg, addTour,tourChange, deleteTour, createTour};
+    return {tourName, tourType, activities, statusMsg, errorMsg, addTour,tourChange, deleteActivity, createTour};
   },
 };
 </script>
