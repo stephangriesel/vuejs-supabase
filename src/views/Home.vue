@@ -1,5 +1,35 @@
 <template>
-  <div></div>
+  <div v-if="dataLoaded" class="container mt-10 px-4">
+    <!-- No data -->
+    <div v-if="data.length === 0" class="w-full flex flex-col items-center">
+      <h1 class="text-2xl">Not much going on here...</h1>
+      <router-link :to="{name: 'Create'}" class="mt-6 py-2 px-6 rounded-sm text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" :key="index">Create Tour</router-link>
+    </div>
+
+    <!-- Data -->
+    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-6">
+      <router-link 
+        class="flex flex-col item-center bg-light-red p-8 shadow-md cursor-pointer" 
+        :to="{name: ''}"
+        v-for="{tour, index} in data"
+        :key="index"
+        >
+        <!-- img -->
+        <img v-if="tour.tourType === 'walk'" src="@/assets/images/walk.svg" class="h-24 w-auto" alt="">
+        
+        <img v-else src="@/assets/images/walk.svg" class="h-24 w-auto" alt="">
+
+        <p class="mt-6 py-1 text-xs text-white bg-at-light-red shadow-md rounded-lg">
+          {{tour.tourType}}
+        </p>
+
+        <h1 class="mt-8 mb-2 text-center text-xl text-at-light-red">
+          {{tour.tourName}}
+        </h1>
+      </router-link>
+    </div>
+
+  </div>
 </template>
 
 <script>
