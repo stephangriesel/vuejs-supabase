@@ -3,6 +3,7 @@ import Home from "../views/Home.vue";
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Create from '../views/Create.vue'
+import ViewTour from '../views/ViewTour.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: "/create",
     name: "Create",
     component: Create,
+  },
+  {
+    path: "/view-tour/:tourId",
+    name: "View-Tour",
+    component: ViewTour,
   },
 ];
 
