@@ -20,7 +20,7 @@
         <!-- img -->
         <img v-if="tour.tourType === 'walk'" src="@/assets/images/walk.svg" class="h-24 w-auto" alt="">
         
-        <img v-else src="@/assets/images/walk.svg" class="h-24 w-auto" alt="">
+        <img v-else src="@/assets/images/bicycle.svg" class="h-24 w-auto" alt="">
 
         <p class="mt-6 py-1 text-xs text-white bg-at-light-red shadow-md rounded-lg">
           {{tour.tourType}}
