@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { supabase } from '../supabase/init'
 import Home from "../views/Home.vue";
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
@@ -11,7 +12,8 @@ const routes = [
     name: "Home",
     component: Home,
     meta: {
-      title: "Home"
+      title: "Home",
+      auth: false
     },
   },
   {
@@ -19,7 +21,8 @@ const routes = [
     name: "Login",
     component: Login,
     meta: {
-      title: "Login"
+      title: "Login",
+      auth: false
     }
   },
   {
@@ -27,7 +30,8 @@ const routes = [
     name: "Register",
     component: Register,
     meta: {
-      title: "Register"
+      title: "Register",
+      auth: false
     }
   },
   {
@@ -35,7 +39,8 @@ const routes = [
     name: "Create",
     component: Create,
     meta: {
-      title: "Create"
+      title: "Create",
+      auth: true
     }
   },
   {
@@ -43,7 +48,8 @@ const routes = [
     name: "View-Tour",
     component: ViewTour,
     meta: {
-      title: "View Tour"
+      title: "View Tour",
+      auth: false
     }
   },
 ];
@@ -60,5 +66,17 @@ router.beforeEach((to,from,next) => {
 })
 
 // Route guard for auth routes
+router.beforeEach((to, from, next) => {
+  const user = supabase.auth.user();
+  if (to.matched.some((res) => res.meta.auth)) {
+    if (user) {
+      next();
+      return
+    }
+    next({name: 'Login'})
+    return
+  }
+  next();
+})
 
 export default router;
