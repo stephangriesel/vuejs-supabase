@@ -63,7 +63,7 @@
                             <input class="p-2 w-full text-gray-500 focus:outline-none" id="duration" type="text" v-if="edit" v-model="item.duration"/>
                             <p v-else>{{item.duration}}</p>
                         </div>
-                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
+                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" @click="deleteActivity(item.id)" src="@/assets/images/trash.svg" v-if="edit"  >
                     </div>
                     <button v-if="edit" @click="addActivity"  class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
                 </div>
@@ -103,12 +103,12 @@
                             <input class="p-2 w-full text-gray-500 focus:outline-none" id="duration" type="text" v-if="edit" v-model="item.duration"/>
                             <p v-else>{{item.duration}}</p>
                         </div>
-                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
+                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit" @click="deleteActivity(item.id)">
                     </div>
                     <button v-if="edit" @click="addActivity" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
                 </div>
             </div>
-            <button v-if="edit" class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="submit">Update Activity</button>
+            <button v-if="edit" class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button" @click="update">Update Activity</button>
         </div>
     </div>
 </template>
@@ -197,11 +197,42 @@ export default {
 
         })
     }
+
     // Delete activity
+        const deleteActivity = (id) => {
+        if (data.value.activities.length > 1){
+            data.value.activities = data.value.activities.filter(activity => activity.id !== id );
+            return;
+        }
+        errorMsg.value = "Error: Can not remove, need at least one activity";
+        setTimeout(( ) => {
+            errorMsg.value = false;
+        }, 5000)
+    }
 
     // Update tour
+    const update = async () => {
+        try {
+            const {error} = await supabase.from('tours').update({
+                tourName: data.value.tourName,
+                activities: data.value.activities
+            }).eq(`id`, currentId);
+            if(error) throw console.error;
+            edit.value = false;
+            statusMsg.value = "Success: Tour Updated"
+            setTimeout(() => {
+                statusMsg.value = false
+            },5000)
+        }
+        catch (error) {
+            errorMsg.value `Error: ${error.message}`;
+            setTimeout(() => {
+                errorMsg.value = false
+            },5000)
+        }
+    }
 
-    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user, deleteTour, addActivity};
+    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user, deleteTour, addActivity, deleteActivity, update};
   },
 };
 </script>
