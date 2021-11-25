@@ -4,7 +4,9 @@
             <p class="text-at-light-red">
                 {{statusMsg}}
             </p>
-            <p class="text-red-500"></p>
+            <p class="text-red-500">
+                {{ errorMsg }}
+            </p>
         </div>
         <div v-if="dataLoaded">
             <!-- Tour Info -->
@@ -13,7 +15,7 @@
                     <div @click="editMode" class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg">
                         <img alt="" class="h-3.5 w-auto" src="@/assets/images/pencil.svg">
                     </div>
-                    <div class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg" @click="deleteTour">
+                    <div @click="deleteTour" class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg">
                         <img alt="" class="h-3.5 w-auto" src="@/assets/images/trash.svg">
                     </div>
                 </div>
@@ -63,9 +65,9 @@
                             <input class="p-2 w-full text-gray-500 focus:outline-none" id="duration" type="text" v-if="edit" v-model="item.duration"/>
                             <p v-else>{{item.duration}}</p>
                         </div>
-                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" @click="deleteActivity(item.id)" src="@/assets/images/trash.svg" v-if="edit"  >
+                        <img @click="deleteActivity(item.id)" alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
                     </div>
-                    <button v-if="edit" @click="addActivity"  class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
+                    <button @click="addActivity" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button" v-if="edit">Add Activity</button>
                 </div>
                 <!-- Walk Info -->
                 <div class="flex flex-col gap-y-4 w-full" v-else>
@@ -103,12 +105,12 @@
                             <input class="p-2 w-full text-gray-500 focus:outline-none" id="duration" type="text" v-if="edit" v-model="item.duration"/>
                             <p v-else>{{item.duration}}</p>
                         </div>
-                        <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit" @click="deleteActivity(item.id)">
+                        <img @click="deleteActivity(item.id)" alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
                     </div>
-                    <button v-if="edit" @click="addActivity" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
+                    <button @click="addActivity" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button" v-if="edit">Add Activity</button>
                 </div>
             </div>
-            <button v-if="edit" class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button" @click="update">Update Activity</button>
+            <button @click="update" class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button" v-if="edit">Update Activity</button>
         </div>
     </div>
 </template>
@@ -201,7 +203,7 @@ export default {
     // Delete activity
         const deleteActivity = (id) => {
         if (data.value.activities.length > 1){
-            data.value.activities = data.value.activities.filter(activity => activity.id !== id );
+            data.value.activities = data.value.activities.filter((activity) => activity.id !== id );
             return;
         }
         errorMsg.value = "Error: Can not remove, need at least one activity";
