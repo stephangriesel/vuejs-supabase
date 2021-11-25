@@ -13,7 +13,7 @@
                     <div @click="editMode" class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg">
                         <img alt="" class="h-3.5 w-auto" src="@/assets/images/pencil.svg">
                     </div>
-                    <div class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg">
+                    <div class="h7 w-7 rounded-full flex justify-center items-center cursor-pointer bg-at-light-red shadow-lg" @click="deleteTour">
                         <img alt="" class="h-3.5 w-auto" src="@/assets/images/trash.svg">
                     </div>
                 </div>
@@ -116,7 +116,7 @@
 <script>
 import { ref, computed } from "vue";
 import { supabase } from "../supabase/init";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import store from '../store/index'
 
 export default {
@@ -128,6 +128,7 @@ export default {
     const errorMsg = ref(null);
     const statusMsg = ref(null);
     const route = useRoute();
+    const router = useRouter();
     const user = computed(() => store.state.user)
 
     // Get current Id of route
@@ -153,6 +154,19 @@ export default {
     
 
     // Delete tour
+    const deleteTour = async () => {
+        try{
+            const {error} = await supabase.from('tours').delete().eq('id',currentId);
+            if (error) throw error;
+            router.push({name: "Home"})
+        }
+        catch(error){
+            errorMsg.value = `Error: ${error.message}`
+            setTimeout(() => {
+                errorMsg.value = false
+            }, 5000)
+        }
+    }
 
     // Edit mode
     const edit = ref(null);
@@ -167,7 +181,7 @@ export default {
 
     // Update tour
 
-    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user};
+    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user, deleteTour};
   },
 };
 </script>
