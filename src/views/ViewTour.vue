@@ -65,7 +65,7 @@
                         </div>
                         <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
                     </div>
-                    <button v-if="edit" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
+                    <button v-if="edit" @click="addActivity"  class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
                 </div>
                 <!-- Walk Info -->
                 <div class="flex flex-col gap-y-4 w-full" v-else>
@@ -105,7 +105,7 @@
                         </div>
                         <img alt="" class="absolute h-4 w-auto -left-5 cursor-pointer" src="@/assets/images/trash.svg" v-if="edit">
                     </div>
-                    <button v-if="edit" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
+                    <button v-if="edit" @click="addActivity" class="mt-6 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="button">Add Activity</button>
                 </div>
             </div>
             <button v-if="edit" class="mt-10 py-2 px-6 rounded-sm self-start text-sm text-white bg-at-light-red duration-200 border-solid border-2 border-transparent hover:border-at-light-red hover:bg-white hover:text-at-light-red" type="submit">Update Activity</button>
@@ -118,6 +118,7 @@ import { ref, computed } from "vue";
 import { supabase } from "../supabase/init";
 import { useRoute, useRouter } from "vue-router";
 import store from '../store/index'
+import {uid} from 'uid'
 
 export default {
   name: "view-tour",
@@ -175,13 +176,32 @@ export default {
       edit.value = !edit.value
     }
 
-    // Add exercise
+    // Add activity
+    const addActivity = () => {
+        if (data.value.tourType === 'walk') {
+            data.value.activities.push({
+                id: uid(),
+                tour: "",
+                landmarks: "",
+                facts: "",
+                duration:"",
+            });
+            return
+        }
+        data.value.activities.push({
+            id: uid(),
+            bikeType: "",
+            landmarks: "",
+            facts:"",
+            duration:"",
 
-    // Delete exercise
+        })
+    }
+    // Delete activity
 
     // Update tour
 
-    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user, deleteTour};
+    return {statusMsg, data, dataLoaded, errorMsg, edit, editMode, user, deleteTour, addActivity};
   },
 };
 </script>
